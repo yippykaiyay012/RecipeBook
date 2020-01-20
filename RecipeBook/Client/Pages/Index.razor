@@ -1,0 +1,43 @@
+﻿@page "/"
+@inject HttpClient http
+@using RecipeBook.Shared.Models
+@using RecipeBook.Client.Shared.Components
+@layout EmptyLayout
+
+<div class="pb-3">
+    <Search SearchSent="SearchRecipes"></Search>
+</div>
+
+
+@if (recipes == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+<ul class="recipe-items">
+    @foreach (var recipe in recipes)
+    {
+        <RecipeCard Recipe="recipe"></RecipeCard>
+    }
+</ul>
+   
+
+}
+
+
+@code{
+
+
+    List<Recipe> recipes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        recipes = await http.GetJsonAsync<List<Recipe>>("/api/recipes");
+    }
+
+    private async Task SearchRecipes(string query)
+    {
+        recipes = await http.GetJsonAsync<List<Recipe>>($"/api/recipes/{query}");
+    }
+}

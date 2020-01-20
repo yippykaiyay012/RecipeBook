@@ -1,0 +1,52 @@
+﻿@implements IDisposable
+@using System.Timers
+
+<input @bind="SearchTerm" @bind:event="oninput" class="form-control col-12 text-center" placeholder="Search..."/>
+
+
+@code {
+
+    //https://youtu.be/KlngrOF6RPw?t=1404
+    Timer timer;
+    int timeInterval = 500;
+
+    [Parameter]
+    public EventCallback<string> SearchSent { get; set; }
+
+
+    private string searchTerm;
+
+    public string SearchTerm
+    {
+        get { return searchTerm; }
+        set
+        {
+            searchTerm = value;
+            timer.Stop();
+            timer.Start();
+
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        timer = new Timer();
+        timer.Interval = timeInterval;
+        timer.AutoReset = false;
+        timer.Elapsed += StartSearch;
+
+
+    }
+
+
+    private async void StartSearch(Object source, ElapsedEventArgs e)
+    {
+        await InvokeAsync(() => SearchSent.InvokeAsync(searchTerm));
+    }
+
+
+    public void Dispose()
+    {
+        timer.Dispose();
+    }
+}
