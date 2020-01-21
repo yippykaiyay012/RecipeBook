@@ -31,15 +31,22 @@ namespace RecipeBook.Server.Controllers
 
         // GET: api/Recipes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipes(string searchTerm)
+        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipes()
         {
-            if(searchTerm == null)
+             return await _context.Recipes.ToListAsync();
+        }
+
+        [HttpGet("/api/recipes/search")]
+        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipes([FromQuery]string searchTerm)
+        {
+            if (searchTerm == null)
                 return await _context.Recipes.ToListAsync();
 
             return await _context.Recipes
-                .Where(x => x.Title.Contains(searchTerm) 
+                .Where(x => x.Title.Contains(searchTerm)
                     || x.Description.Contains(searchTerm)).ToListAsync();
         }
+
 
 
 
@@ -47,11 +54,20 @@ namespace RecipeBook.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Recipe>> GetRecipe(int id)
         {
-            var recipe = await _context.Recipes.FindAsync(id);
+            var recipe = await _context.Recipes
+                .Include(x => x.Ingredients)
+                .Include(x => x.Steps)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (recipe == null)
             {
                 return NotFound();
+            }
+
+
+            foreach(var ingr in recipe.Ingredients)
+            {
+                Console.WriteLine(ingr.Name);
             }
 
             return recipe;

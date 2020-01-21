@@ -11,7 +11,7 @@ namespace RecipeBook.Shared.Models
         public string Heading { get; set; }
         public string Content { get; set; }
 
-        public Recipe Recipe { get; set; }
+      //  public Recipe Recipe { get; set; }
         public int RecipeId { get; set; }
 
     }

@@ -11,17 +11,17 @@
 
 @if (recipes == null)
 {
-    <p>Loading...</p>
+    <RecipeBook.Client.Shared.Components.Loading />
 }
 else
 {
-<ul class="recipe-items">
-    @foreach (var recipe in recipes)
-    {
-        <RecipeCard Recipe="recipe"></RecipeCard>
-    }
-</ul>
-   
+    <ul class="recipe-items">
+        @foreach (var recipe in recipes)
+        {
+            <RecipeCard Recipe="recipe"></RecipeCard>
+        }
+    </ul>
+
 
 }
 
@@ -38,6 +38,6 @@ else
 
     private async Task SearchRecipes(string query)
     {
-        recipes = await http.GetJsonAsync<List<Recipe>>($"/api/recipes/{query}");
+        recipes = await http.GetJsonAsync<List<Recipe>>($"/api/recipes/search?searchTerm={query}");
     }
 }
