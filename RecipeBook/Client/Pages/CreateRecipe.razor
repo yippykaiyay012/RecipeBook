@@ -60,7 +60,7 @@
 </div>
 
 
-<div class="form-inline float-right">
+<div class="form-inline float-right mb-3">
     <button  class="btn btn-danger form-control mt-2">Cancel</button>
     <button @onclick="AddNewRecipe" class="btn btn-custom form-control mt-2 ml-3">Save</button>
 
@@ -84,7 +84,7 @@
     {
         recipe.Steps.Add(new Step() { StepNumber = recipe.Steps.Count + 1 });
         //  steps.Add(new Step() { StepNumber = steps.Count + 1 });
-
+        
 
     }
 
