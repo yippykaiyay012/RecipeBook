@@ -1,7 +1,7 @@
 ﻿@page "/CreateRecipe"
 @using RecipeBook.Shared.Models
 @inject HttpClient http
-@layout EmptyLayout
+@inject NavigationManager nav
 
 
 
@@ -75,8 +75,9 @@
 
     async void AddNewRecipe()
     {
-        //recipe.Steps = steps;
+
         await http.PostJsonAsync<Recipe>("/api/recipes", recipe);
+
     }
 
     void AddNewStep()

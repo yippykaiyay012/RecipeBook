@@ -164,13 +164,13 @@ app {
 }
 
 
-/*.create-section {
-    -webkit-box-shadow: 0px 0px 55px -20px rgba(0,0,0,0.29);
+.create-section {
+    /*-webkit-box-shadow: 0px 0px 55px -20px rgba(0,0,0,0.29);
     -moz-box-shadow: 0px 0px 55px -20px rgba(0,0,0,0.29);
-    box-shadow: 0px 0px 55px -20px rgba(0,0,0,0.29);
+    box-shadow: 0px 0px 55px -20px rgba(0,0,0,0.29);*/
     padding: 20px;
     margin-bottom: 50px;
-}*/
+}
 
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
