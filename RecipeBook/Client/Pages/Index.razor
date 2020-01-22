@@ -4,10 +4,9 @@
 @using RecipeBook.Client.Shared.Components
 @layout EmptyLayout
 
-<div class="pb-3">
-    <Search SearchSent="SearchRecipes"></Search>
+<div class="pb-3 form-inline ">
+    <Search Classes="form-control col-12" SearchSent="SearchRecipes"></Search>
 </div>
-
 
 @if (recipes == null)
 {

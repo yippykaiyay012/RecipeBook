@@ -1,7 +1,7 @@
 ﻿@implements IDisposable
 @using System.Timers
 
-<input @bind="SearchTerm" @bind:event="oninput" class="form-control col-12 text-center" placeholder="Search..."/>
+<input @bind="SearchTerm" @bind:event="oninput" class="form-control text-center @Classes" placeholder="Search..."/>
 
 
 @code {
@@ -12,6 +12,8 @@
 
     [Parameter]
     public EventCallback<string> SearchSent { get; set; }
+
+    [Parameter] public string Classes { get; set; }
 
 
     private string searchTerm;

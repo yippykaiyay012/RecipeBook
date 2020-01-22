@@ -3,60 +3,61 @@
 @using RecipeBook.Shared.Models
 @layout EmptyLayout
 
-<h1 class="text-center pb-5">@recipe.Title</h1>
+    <div class="container">
+        <h1 class="text-center pb-5">@recipe.Title</h1>
 
-@if (recipe.Id == 0)
-{
-    <RecipeBook.Client.Shared.Components.Loading />
-}
-else
-{
-    <div class="row">
-        <div class="col-4">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Measurement</th>
-                        <th>Ingredient</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var ingr in recipe.Ingredients)
-                    {
-                        <tr>
-                            <td class="text-right">@ingr.Measurement</td>
-                            <td>@ingr.Name</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-
-        <div class="col-8">
-            <h2>Description</h2>
-            @recipe.Description
-        </div>
-    </div>
-
-
-
-
-    <ul class="list-unstyled">
-        @foreach (var step in recipe.Steps.OrderBy(x => x.Id))
+        @if (recipe.Id == 0)
         {
-            <li class="mt-3">
-                <div class="">
-                    <h3 class="d-inline-block">Step @step.StepNumber:</h3>
-                    <h3 class="d-inline-block">@step.Heading</h3>
+            <RecipeBook.Client.Shared.Components.Loading />
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-4">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Measurement</th>
+                                <th>Ingredient</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var ingr in recipe.Ingredients)
+                            {
+                                <tr>
+                                    <td class="text-right">@ingr.Measurement</td>
+                                    <td>@ingr.Name</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
 
-                <div>@step.Content</div>
-            </li>
+                <div class="col-8">
+                    <h2>Description</h2>
+                    @recipe.Description
+                </div>
+            </div>
+
+
+
+
+            <ul class="list-unstyled">
+                @foreach (var step in recipe.Steps.OrderBy(x => x.Id))
+                {
+                    <li class="mt-3">
+                        <div class="">
+                            <h3 class="d-inline-block">Step @step.StepNumber:</h3>
+                            <h3 class="d-inline-block">@step.Heading</h3>
+                        </div>
+
+                        <div>@step.Content</div>
+                    </li>
+                }
+            </ul>
+
         }
-    </ul>
-
-}
-
+    </div>
 
 
 @code {
