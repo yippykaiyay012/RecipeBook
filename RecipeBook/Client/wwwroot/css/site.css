@@ -142,6 +142,7 @@ app {
 .recipe-items {
     display: grid;
     grid-template-columns: repeat(auto-fill, 20rem);
+    grid-template-rows: repeat(auto-fill, 20rem);
     grid-gap: 2rem;
     justify-content: center;
     padding-left: 0;
@@ -151,6 +152,13 @@ app {
 .recipe-item:hover {
     transform: scale(1.02);
     transition: 0.2s ease-out;
+}
+
+
+.shadow-custom {
+    -webkit-box-shadow: 0px 0px 55px -20px rgba(0,0,0,0.29);
+    -moz-box-shadow: 0px 0px 55px -20px rgba(0,0,0,0.29);
+    box-shadow: 0px 0px 55px -20px rgba(0,0,0,0.29);
 }
 
 .nav-custom {
@@ -166,9 +174,6 @@ app {
 
 
 .create-section {
-    -webkit-box-shadow: 0px 0px 55px -20px rgba(0,0,0,0.29);
-    -moz-box-shadow: 0px 0px 55px -20px rgba(0,0,0,0.29);
-    box-shadow: 0px 0px 55px -20px rgba(0,0,0,0.29);
     padding: 20px;
     margin-bottom: 50px;
     border: solid 1px;

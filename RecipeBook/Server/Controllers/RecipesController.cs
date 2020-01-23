@@ -111,6 +111,7 @@ namespace RecipeBook.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Recipe>> PostRecipe(Recipe recipe)
         {
+            recipe.DateCreated = DateTime.Now;
             _context.Recipes.Add(recipe);
             await _context.SaveChangesAsync();
 
