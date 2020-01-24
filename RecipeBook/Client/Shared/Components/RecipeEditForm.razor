@@ -1,21 +1,25 @@
 ﻿@using RecipeBook.Shared.Models
+@using RecipeBook.Client.Shared.Components
 @inject HttpClient http
 
 
 @if (Recipe == null)
 {
-    <RecipeBook.Client.Shared.Components.Loading />
+    <Loading />
 }
 else
 {
 
-
+<EditForm Model="Recipe" OnValidSubmit="(() => Submitted.InvokeAsync(Recipe))">
+    <DataAnnotationsValidator />
     <div class="form-group mt-3">
         <div class="create-section shadow-custom">
             <h2 class="mt-3">Details</h2>
             <label for="title">Title</label>
+            <ValidationMessage For="(() => Recipe.Title)" />
             <input @bind="Recipe.Title" class="form-control mb-2" type="text" id="title" placeholder="Title" />
             <label for="description">Description</label>
+            <ValidationMessage For="(() => Recipe.Description)" />
             <textarea @bind="Recipe.Description" style="height:10rem" class="form-control mb-2" type="text" id="description" placeholder="Description" />
             <label for="iconURL">Icon URL</label>
             <input @bind="Recipe.IconURL" class="form-control mb-2" type="text" id="iconURL" placeholder="Icon URL" />
@@ -64,9 +68,11 @@ else
 
     <div class="form-inline float-right mb-3">
         <a href="/" class="btn btn-danger form-control mt-2">Cancel</a>
-        <a @onclick="(() => Submitted.InvokeAsync(Recipe))" class="btn btn-custom form-control mt-2 ml-3">Save</a>
+        @*<a @onclick="(() => Submitted.InvokeAsync(Recipe))" class="btn btn-custom form-control mt-2 ml-3">Save</a>*@
+        <button type="submit" class="btn btn-custom form-control mt-2 ml-3">Save</button>
 
     </div>
+</EditForm>
 
 }
 
