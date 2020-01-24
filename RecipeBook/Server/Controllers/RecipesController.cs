@@ -112,6 +112,8 @@ namespace RecipeBook.Server.Controllers
         public async Task<ActionResult<Recipe>> PostRecipe(Recipe recipe)
         {
             recipe.DateCreated = DateTime.Now;
+            _ = recipe.IconURL ?? (recipe.IconURL = "http://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png");
+
             _context.Recipes.Add(recipe);
             await _context.SaveChangesAsync();
 

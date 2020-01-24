@@ -1,0 +1,24 @@
+﻿@page "/EditRecipe/{Id:int}"
+@using RecipeBook.Shared.Models
+@using RecipeBook.Client.Shared.Components
+@inject HttpClient http
+@inject NavigationManager nav
+
+<h1 class="text-center mb-4">Edit Recipe</h1>
+<RecipeEditForm Id="@Id" Recipe="recipe" Submitted="UpdateRecipe"></RecipeEditForm>
+
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    Recipe recipe;
+
+
+    async void UpdateRecipe(Recipe recipe)
+    {
+        await http.PutJsonAsync($"/api/recipes/{Id}", recipe);
+        nav.NavigateTo($"/recipe/{Id}");
+    }
+}

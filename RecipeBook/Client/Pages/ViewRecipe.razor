@@ -7,6 +7,7 @@
     <div class="">
         <h1 class="text-center pb-5">@recipe.Title</h1>
         <button @onclick="(() => showModal = true)" class="btn btn-custom float-right">Options</button>
+
     </div>
     @if (recipe.Id == 0)
     {
@@ -83,8 +84,8 @@
                 </div>
                 <div class="modal-body">
                     <p></p>
-                    <button @onclick="EditRecipe" class="btn btn-custom">Edit</button>
                     <button @onclick="DeleteRecipe" class="btn btn-danger float-right">Delete</button>
+                    <button @onclick="EditRecipe" class="btn btn-custom">Edit</button>
 
                 </div>
 

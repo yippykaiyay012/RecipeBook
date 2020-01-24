@@ -142,7 +142,7 @@ app {
 .recipe-items {
     display: grid;
     grid-template-columns: repeat(auto-fill, 20rem);
-    grid-template-rows: repeat(auto-fill, 20rem);
+    /*grid-template-rows: repeat(auto-fill, 20rem);*/
     grid-gap: 2rem;
     justify-content: center;
     padding-left: 0;
