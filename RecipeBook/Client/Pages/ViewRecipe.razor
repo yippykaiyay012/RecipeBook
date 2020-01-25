@@ -1,6 +1,7 @@
 ﻿@page "/recipe/{Id:int}"
 @inject HttpClient http
 @using RecipeBook.Shared.Models
+@using RecipeBook.Client.Shared.Components
 @inject NavigationManager nav
 
 <div class="container">
@@ -11,7 +12,7 @@
     </div>
     @if (recipe.Id == 0)
     {
-        <RecipeBook.Client.Shared.Components.Loading />
+        <Loading />
     }
     else
     {
@@ -84,8 +85,8 @@
                 </div>
                 <div class="modal-body">
                     <p></p>
-                    <button @onclick="DeleteRecipe" class="btn btn-danger float-right">Delete</button>
-                    <button @onclick="EditRecipe" class="btn btn-custom">Edit</button>
+                    <button @onclick="DeleteRecipe" class="btn btn-danger">Delete</button>
+                    <button @onclick="EditRecipe" class="btn btn-custom  float-right">Edit</button>
 
                 </div>
 

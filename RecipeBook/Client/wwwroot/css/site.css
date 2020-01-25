@@ -169,8 +169,9 @@ app {
 .btn-custom {
     color: #fff;
     background-color: #25b7d3;
-    
+    cursor: pointer;
 }
+
 
 
 .create-section {

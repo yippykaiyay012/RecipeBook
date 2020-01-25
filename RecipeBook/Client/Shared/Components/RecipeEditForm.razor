@@ -44,7 +44,7 @@ else
                     }
                 </tbody>
             </table>
-            <button @onclick="AddIngredient" class="btn btn-custom form-control mt-2">Add Ingredient</button>
+            <a @onclick="AddIngredient" class="btn btn-custom text-white form-control mt-2">Add Ingredient</a>
         </div>
 
         <div class="create-section shadow-custom">
@@ -60,7 +60,7 @@ else
                 <label for="content-@step.StepNumber">Content</label>
                 <textarea class="form-control mb-2" style="height:10rem" @bind="@step.Content" id="content-@step.StepNumber" placeholder="Content" />
             }
-            <button @onclick="AddNewStep" class="btn btn-custom text-white form-control mt-2">Add Step</button>
+            <a @onclick="AddNewStep" class="btn btn-custom text-white form-control mt-2">Add Step</a>
         </div>
 
     </div>

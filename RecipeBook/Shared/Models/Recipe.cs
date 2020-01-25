@@ -19,6 +19,7 @@ namespace RecipeBook.Shared.Models
 
         public string IconURL { get; set; }
 
+ 
         public List<Step> Steps { get; set; } = new List<Step>();
 
         
