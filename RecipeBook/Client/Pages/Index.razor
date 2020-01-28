@@ -6,6 +6,13 @@
 <div class="pb-3 form-inline ">
     <Search Classes="form-control col-12 m-auto" SearchSent="SearchRecipes"></Search>
 </div>
+<select class="float-right custom-select-sm" @onchange="PageSizeChanged">
+    @for (var i = 10; i <= 100; i += 10)
+    {
+        <option value="@i">@i</option>
+    }
+</select>
+
 
 @if (recipes == null)
 {
@@ -21,25 +28,61 @@ else
     </ul>
 
 
+
+    <nav>
+        <ul class="pagination justify-content-center">
+            @for (var i = currentPage - 3; i <= currentPage + 3 && i < pagedRecipe.MaxPages -1; i++)
+            {
+                @if (i > 0)
+                {
+                    <li class="page-item clickable"><a class="page-link" @onclick="(() => ChangePage(i))">@i</a></li>
+                }
+
+            }
+        </ul>
+    </nav>
+
+    <p>currentPage = @pagedRecipe.Page</p>
 }
+
+
 
 
 @code{
 
 
-    List<Recipe> recipes;
+        List<Recipe> recipes;
+        PagedResult<Recipe> pagedRecipe;
+        string currentQuery = "";
+        int currentPage = 1;
+        int pageSize = 10;
+
 
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await http.GetJsonAsync<PagedResult<Recipe>>($"/api/recipes/search?searchTerm=&pageNumber=1&pageSize=10");
-        recipes = result.Items;
+        pagedRecipe = await http.GetJsonAsync<PagedResult<Recipe>>($"/api/recipes/search?searchTerm=&pageNumber=1&pageSize=10");
+        recipes = pagedRecipe.Items;
     }
-    
+
+    private async Task ChangePage(int page)
+    {
+        currentPage = page;
+        await SearchRecipes(currentQuery);
+
+    }
+    private async Task PageSizeChanged(ChangeEventArgs e)
+    {       
+        int.TryParse(e.Value.ToString(), out pageSize);
+        await SearchRecipes(currentQuery);
+    }
 
     private async Task SearchRecipes(string query)
     {
-        var result = await http.GetJsonAsync<PagedResult<Recipe>>($"/api/recipes/search?searchTerm={query}&pageNumber=1&pageSize=10");
-        recipes = result.Items;
+        // to avoid clearing on page change
+        currentQuery = query;
+
+        pagedRecipe = await http.GetJsonAsync<PagedResult<Recipe>>($"/api/recipes/search?searchTerm={query}&pageNumber={currentPage}&pageSize={pageSize}");
+        recipes = pagedRecipe.Items;
     }
 }

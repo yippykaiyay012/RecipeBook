@@ -31,7 +31,7 @@ namespace RecipeBook.Server.Controllers
 
 
         [HttpGet("/api/recipes/search")]
-        public async Task<ActionResult<PagedResult<Recipe>>> GetRecipes([FromQuery]string searchTerm, int pageNumber, int pageSize)
+        public async Task<ActionResult<PagedResult<Recipe>>> GetRecipes([FromQuery]string searchTerm, int pageNumber = 1, int pageSize = 10)
         {
 
             if (searchTerm == null)

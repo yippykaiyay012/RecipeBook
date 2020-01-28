@@ -172,7 +172,9 @@ app {
     cursor: pointer;
 }
 
-
+.clickable {
+    cursor: pointer;
+}
 
 .create-section {
     padding: 20px;
@@ -180,7 +182,6 @@ app {
     border: solid 1px;
     border-color: lightgray;
     border-radius: 10px;
-
 }
 
 @media (max-width: 767.98px) {
