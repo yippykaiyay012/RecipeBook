@@ -29,13 +29,17 @@ else
 
     List<Recipe> recipes;
 
+
     protected override async Task OnInitializedAsync()
     {
-        recipes = await http.GetJsonAsync<List<Recipe>>("/api/recipes");
+        var result = await http.GetJsonAsync<PagedResult<Recipe>>($"/api/recipes/search?searchTerm=&pageNumber=1&pageSize=10");
+        recipes = result.Items;
     }
+    
 
     private async Task SearchRecipes(string query)
     {
-        recipes = await http.GetJsonAsync<List<Recipe>>($"/api/recipes/search?searchTerm={query}");
+        var result = await http.GetJsonAsync<PagedResult<Recipe>>($"/api/recipes/search?searchTerm={query}&pageNumber=1&pageSize=10");
+        recipes = result.Items;
     }
 }

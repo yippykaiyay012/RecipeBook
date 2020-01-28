@@ -29,6 +29,34 @@ namespace RecipeBook.Server.Controllers
         //    return await _context.Recipes.ToListAsync();
         //}
 
+
+        [HttpGet("/api/recipes/search")]
+        public async Task<ActionResult<PagedResult<Recipe>>> GetRecipes([FromQuery]string searchTerm, int pageNumber, int pageSize)
+        {
+
+            if (searchTerm == null)
+            {
+                searchTerm = string.Empty;
+            }
+            var totalRecords =  await _context.Recipes.Where(x => x.Title.Contains(searchTerm) || x.Description.Contains(searchTerm)).CountAsync();
+            var maxPages = totalRecords / pageSize;
+
+            var results = await _context.Recipes
+                .Where(x => x.Title.Contains(searchTerm) || x.Description.Contains(searchTerm))
+                .Skip((pageNumber -1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<Recipe>
+            {
+                Page = pageNumber,
+                MaxPages = maxPages,
+                PageSize = pageSize,
+                Items = results
+            };
+
+        }
+
         // GET: api/Recipes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipes()
@@ -36,16 +64,16 @@ namespace RecipeBook.Server.Controllers
              return await _context.Recipes.ToListAsync();
         }
 
-        [HttpGet("/api/recipes/search")]
-        public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipes([FromQuery]string searchTerm)
-        {
-            if (searchTerm == null)
-                return await _context.Recipes.ToListAsync();
+        //[HttpGet("/api/recipes/search")]
+        //public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipes([FromQuery]string searchTerm)
+        //{
+        //    if (searchTerm == null)
+        //        return await _context.Recipes.ToListAsync();
 
-            return await _context.Recipes
-                .Where(x => x.Title.Contains(searchTerm)
-                    || x.Description.Contains(searchTerm)).ToListAsync();
-        }
+        //    return await _context.Recipes
+        //        .Where(x => x.Title.Contains(searchTerm)
+        //            || x.Description.Contains(searchTerm)).ToListAsync();
+        //}
 
 
 
