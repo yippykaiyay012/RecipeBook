@@ -6,7 +6,7 @@
 <div class="pb-3 form-inline ">
     <Search Classes="form-control col-12 m-auto" SearchSent="SearchRecipes"></Search>
 </div>
-<select class="float-right custom-select-sm" @onchange="PageSizeChanged">
+<select class="float-right custom-select-lg ml-2" @onchange="PageSizeChanged">
     @for (var i = 10; i <= 100; i += 10)
     {
         <option value="@i">@i</option>
@@ -16,7 +16,7 @@
 
 @if (recipes == null)
 {
-    <RecipeBook.Client.Shared.Components.Loading />
+    <Loading />
 }
 else
 {
@@ -29,40 +29,53 @@ else
 
 
 
-    <nav>
-        <ul class="pagination justify-content-center">
-            @for (var i = currentPage - 3; i <= currentPage + 3 && i < pagedRecipe.MaxPages -1; i++)
-            {
-                @if (i > 0)
-                {
-                    <li class="page-item clickable"><a class="page-link" @onclick="(() => ChangePage(i))">@i</a></li>
-                }
-
-            }
-        </ul>
-    </nav>
-
-    <p>currentPage = @pagedRecipe.Page</p>
 }
+
+@if (pagedRecipe.Items != null)
+{
+    <nav>
+        <div>
+            @if (pagedRecipe.MaxPages > 1)
+            {
+                <ul class="pagination justify-content-center">
+                    <li><a @onclick="@(() => ChangePage(1))" class="btn clickable">&laquo;</a></li>
+                    @for (var i = Math.Max(pagedRecipe.Page - 5 ,1) ; i <= Math.Min(pagedRecipe.Page + 5, pagedRecipe.MaxPages); i++)
+                    {
+                        var currentIndex = i;
+                        @if (i == pagedRecipe.Page)
+                        {
+                            <li><span class="btn btn-custom">@i</span></li>
+                        }
+                        else
+                        {
+                            <li><a @onclick="@(() => ChangePage(currentIndex))" class="btn clickable">@i</a></li>
+                        }
+                    }
+                    <li><a @onclick="@(() => ChangePage(pagedRecipe.MaxPages))" class="btn clickable">&raquo;</a></li>
+                </ul>
+            }
+        </div>
+    </nav>
+}
+
+
 
 
 
 
 @code{
 
-
-        List<Recipe> recipes;
-        PagedResult<Recipe> pagedRecipe;
-        string currentQuery = "";
-        int currentPage = 1;
-        int pageSize = 10;
-
+    List<Recipe> recipes;
+    PagedResult<Recipe> pagedRecipe = new PagedResult<Recipe>();
+    string currentQuery = "";
+    int currentPage = 1;
+    int pageSize = 10;
 
 
     protected override async Task OnInitializedAsync()
     {
-        pagedRecipe = await http.GetJsonAsync<PagedResult<Recipe>>($"/api/recipes/search?searchTerm=&pageNumber=1&pageSize=10");
-        recipes = pagedRecipe.Items;
+        await SearchRecipes(currentQuery);
+
     }
 
     private async Task ChangePage(int page)
@@ -72,7 +85,7 @@ else
 
     }
     private async Task PageSizeChanged(ChangeEventArgs e)
-    {       
+    {
         int.TryParse(e.Value.ToString(), out pageSize);
         await SearchRecipes(currentQuery);
     }
