@@ -5,11 +5,13 @@
 @inject NavigationManager nav
 
 <div class="container">
-    <div class="">
-        <h1 class="text-center pb-5">@recipe.Title</h1>
-        <button @onclick="(() => showModal = true)" class="btn btn-custom float-right">Options</button>
 
+    <h1 class="text-center pb-5">@recipe.Title</h1>
+    <div>
+        <button @onclick="(() => showModal = true)" class="btn btn-custom float-right">Options</button>
+        <img @onclick="ToggleFavourite" class="float-right clickable mr-2" src="@isFavouriteImage" style="max-width: 40px" />
     </div>
+
     @if (recipe.Id == 0)
     {
         <Loading />
@@ -107,14 +109,22 @@
 
     bool showModal = false;
 
+    string isFavouriteImage = "/img/Heart-False.png";
+    bool isFavourite = false;
+
 
     protected override async Task OnInitializedAsync()
     {
         recipe = await http.GetJsonAsync<Recipe>($"/api/recipes/{Id}");
 
+       
+    }
 
+    async Task ToggleFavourite()
+    {
+        isFavourite = !isFavourite;
 
-
+        isFavouriteImage = isFavourite ? "/img/Heart-True.png" : "/img/Heart-False.png";
     }
 
 
