@@ -114,6 +114,32 @@ namespace RecipeBook.Server.Controllers
 
             _context.Entry(recipe).State = EntityState.Modified;
 
+           
+
+            foreach(var step in recipe.Steps)
+            {
+                if(step.Id == 0)
+                {
+                    _context.Steps.Add(step);
+                }
+                else
+                {
+                    _context.Entry(step).State = EntityState.Modified;
+                }
+            }
+
+            foreach (var ingr in recipe.Ingredients)
+            {
+                if (ingr.Id == 0)
+                {
+                    _context.Ingredients.Add(ingr);
+                }
+                else
+                {
+                    _context.Entry(ingr).State = EntityState.Modified;
+                }
+            }
+
             try
             {
                 await _context.SaveChangesAsync();
