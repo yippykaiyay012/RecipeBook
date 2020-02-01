@@ -6,7 +6,7 @@
             <img class="card-img-top" src="@Recipe.IconURL" alt="Card image cap" style="min-height:318px; min-width:318px;">
             <div class="card-body" style="height:150px">
                 <h5 class="card-title">@Recipe.Title</h5>
-                <p class="card-text">@Recipe.Description</p>
+                <p class="card-text">@(string.Join("", Recipe.Description.Take(50)))</p>
                 <p class="card-text align-bottom"><small class="text-muted">Posted On: @Recipe.DateCreated.ToString("MM/dd/yyyy hh:mm tt")</small></p>
                 <a href="/recipe/@Recipe.Id" class="stretched-link"></a>
             </div>
@@ -20,10 +20,4 @@
 
     [Parameter] public Recipe Recipe { get; set; }
 
-    protected override void OnInitialized()
-    {
-        if(Recipe.Description.Length > 50) {
-            Recipe.Description = Recipe.Description.Substring(0, 50) + "...";
-        }
-    }
 }
