@@ -16,8 +16,9 @@
 
     async void AddNewRecipe(Recipe recipe)
     {
-        await http.PostJsonAsync<Recipe>("/api/recipes", recipe);
-        nav.NavigateTo("/search");
+        var result = await http.PostJsonAsync<Recipe>("/api/recipes", recipe);
+        
+        nav.NavigateTo($"/recipe/{result.Id}");
      }
 
 }
