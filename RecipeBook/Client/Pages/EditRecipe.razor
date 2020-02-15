@@ -3,9 +3,10 @@
 @using RecipeBook.Client.Shared.Components
 @inject HttpClient http
 @inject NavigationManager nav
+@attribute [Authorize]
 
 <h1 class="text-center mb-4">Edit Recipe</h1>
-<RecipeEditForm Id="@Id" Recipe="recipe" Submitted="UpdateRecipe"/>
+<RecipeEditForm Id="@Id" Recipe="recipe" Submitted="UpdateRecipe" />
 
 
 @code {

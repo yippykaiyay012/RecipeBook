@@ -2,75 +2,81 @@
 @inject HttpClient http
 @using RecipeBook.Shared.Models
 @using RecipeBook.Client.Shared.Components
-
-<div class="pb-3 form-inline ">
-    <SearchBox Classes="form-control col-12 m-auto" SearchSent="SearchRecipes"></SearchBox>
-</div>
-<select class="float-right custom-select-lg ml-2" @onchange="PageSizeChanged">
-    @for (var i = 10; i <= 100; i += 10)
-    {
-        <option value="@i">@i</option>
-    }
-</select>
+@attribute [Authorize]
 
 
-@if (recipes == null)
-{
-    <Loading />
-}
-else
-{
-    <ul class="recipe-items">
-        @foreach (var recipe in recipes)
-        {
-            <RecipeCard Recipe="recipe"></RecipeCard>
-        }
-    </ul>
-
-
-
-}
-
-@if (pagedRecipe.Items != null)
-{
-    <nav>
-        <div>
-            @if (pagedRecipe.MaxPages > 1)
-            {
-                <ul class="pagination justify-content-center">
-                    <li><a @onclick="@(() => ChangePage(1))" class="btn clickable">&laquo;</a></li>
-                    @for (var i = Math.Max(pagedRecipe.Page - 5 ,1) ; i <= Math.Min(pagedRecipe.Page + 5, pagedRecipe.MaxPages); i++)
-                    {
-                        var currentIndex = i;
-                        @if (i == pagedRecipe.Page)
-                        {
-                            <li><span class="btn btn-custom">@i</span></li>
-                        }
-                        else
-                        {
-                            <li><a @onclick="@(() => ChangePage(currentIndex))" class="btn clickable">@i</a></li>
-                        }
-                    }
-                    <li><a @onclick="@(() => ChangePage(pagedRecipe.MaxPages))" class="btn clickable">&raquo;</a></li>
-                </ul>
-            }
+<AuthorizeView>
+    <Authorized>
+        <div class="pb-3 form-inline ">
+            <SearchBox Classes="form-control col-12 m-auto" SearchSent="SearchRecipes"></SearchBox>
         </div>
-    </nav>
-}
+        <select class="float-right custom-select-lg ml-2" @onchange="PageSizeChanged">
+            @for (var i = 10; i <= 100; i += 10)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
 
 
+        @if (recipes == null)
+        {
+            <Loading />
+        }
+        else
+        {
+            <ul class="recipe-items">
+                @foreach (var recipe in recipes)
+                {
+                    <RecipeCard Recipe="recipe"></RecipeCard>
+                }
+            </ul>
+
+
+
+        }
+
+        @if (pagedRecipe.Items != null)
+        {
+            <nav>
+                <div>
+                    @if (pagedRecipe.MaxPages > 1)
+                    {
+                        <ul class="pagination justify-content-center">
+                            <li><a @onclick="@(() => ChangePage(1))" class="btn clickable">&laquo;</a></li>
+                            @for (var i = Math.Max(pagedRecipe.Page - 5, 1); i <= Math.Min(pagedRecipe.Page + 5, pagedRecipe.MaxPages); i++)
+                            {
+                                var currentIndex = i;
+                                @if (i == pagedRecipe.Page)
+                                {
+                                    <li><span class="btn btn-custom">@i</span></li>
+                                }
+                                else
+                                {
+                                    <li><a @onclick="@(() => ChangePage(currentIndex))" class="btn clickable">@i</a></li>
+                                }
+                            }
+                            <li><a @onclick="@(() => ChangePage(pagedRecipe.MaxPages))" class="btn clickable">&raquo;</a></li>
+                        </ul>
+                    }
+                </div>
+            </nav>
+        }
+    </Authorized>
+</AuthorizeView>
 
 
 
 
 @code{
 
-    List<Recipe> recipes;
-    PagedResult<Recipe> pagedRecipe = new PagedResult<Recipe>();
-    string currentQuery = "";
-    int currentPage = 1;
-    int pageSize = 10;
+        List<Recipe> recipes;
+        PagedResult<Recipe> pagedRecipe = new PagedResult<Recipe>();
+        string currentQuery = "";
+        int currentPage = 1;
+        int pageSize = 10;
 
+
+    //[CascadingParameter] private Task<AuthenticationState> Auth { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -98,4 +104,7 @@ else
         pagedRecipe = await http.GetJsonAsync<PagedResult<Recipe>>($"/api/recipes/search?searchTerm={query}&pageNumber={currentPage}&pageSize={pageSize}");
         recipes = pagedRecipe.Items;
     }
+
+
+
 }

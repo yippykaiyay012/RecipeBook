@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.DependencyInjection;
+using RecipeBook.Client.Auth;
 using System.Threading.Tasks;
 
 namespace RecipeBook.Client
@@ -9,6 +12,11 @@ namespace RecipeBook.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
+
+            builder.Services.AddOptions();
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<AuthenticationStateProvider, DummyAuthStateProvider>();
+
 
             await builder.Build().RunAsync();
         }
