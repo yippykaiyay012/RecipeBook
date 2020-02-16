@@ -1,21 +1,48 @@
 ﻿@page "/"
+@page "/login"
 @layout EmptyLayout
+@using System;
+@using System.Text;
+@using System.Security.Cryptography;
+@inject HttpClient http
+@using RecipeBook.Shared.Models
+@inject ILocalStorageService localStorage
+@inject NavigationManager nm
+@inject ILoginService loginService 
+
 
 <div class="loginPanel">
-    <img class="d-block" src="http://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png" height="50"/>
-    <p  class="sign" align="center">Sign in</p>
-    <form class="form1">
-        <input class="un " type="text" align="center" placeholder="Username">
-        <input class="pass" type="password" align="center" placeholder="Password">
-        <a @onclick="SignIn" class="submit" align="center">Sign in</a>
+    <img class="d-block" src="http://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png" height="50" />
+    <p class="sign" align="center">Sign in</p>
+    <form class="form1 text-center">
+        <input @bind="username" class="un " type="email" align="center" placeholder="Email">
+        <input @bind="password" class="pass" type="password" align="center" placeholder="Password">
+        <div class="btn-group text-center">
+            <a @onclick="SignIn" href="#" class="submit register" align="center">Sign in</a>
+            <a href="/register" class="submit register" align="center">Register</a>
+        </div>
         <p class="forgot" align="center"><a href="#">Forgot Password?</a></p>
     </form>
 </div>
 @code {
-     
+
+    string username;
+    string password;
 
     async Task SignIn()
     {
+        var user = new UserInfo
+        {
+            Email = username,
+            Password = password
+        };
 
+        var result = await http.PostJsonAsync<UserToken>("api/accounts/login", user);
+        await loginService.SignIn(result.Token);
+        nm.NavigateTo("/search");
     }
+
+
+
+
 }

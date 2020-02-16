@@ -1,15 +1,38 @@
 ﻿@inherits LayoutComponentBase
+@inject ILoginService loginService
 
-<div class="main">
-    <!-- Image and text -->
-    <nav class="navbar nav-custom text-center">
-        <a class="" href="/search">
-            <img src="http://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png" width="60" height="60" class="m-auto" alt="">
-        </a>
-        <a href="/createrecipe" class="btn btn-custom float-right">Create New</a>
-    </nav>
+    <AuthorizeView>
+        <Authorized>
+            <div class="main">
+                <!-- Image and text -->
+                <nav class="navbar nav-custom text-center">
+                    <a class="" href="/search">
+                        <img src="http://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png" width="60" height="60" class="m-auto" alt="">
+                    </a>
+                    <div class="float-right">
+                        <a href="/createrecipe" class="btn btn-custom float-right ml-1">Create New</a>
+                        <a href="#" @onclick="LogOut" class="btn btn-custom float-right">Log Out</a>
+                    </div>
+                </nav>
 
-    <div class="content px-4">
-        @Body
-    </div>
-</div>
+                <div class="content px-4">
+                    @Body
+                </div>
+            </div>
+        </Authorized>
+
+        <NotAuthorized>
+            <RecipeBook.Client.Pages.Login/>
+        </NotAuthorized>
+
+    
+    </AuthorizeView>
+
+
+@code{
+
+    async Task LogOut()
+    {
+        await loginService.SignOut();
+    }
+}

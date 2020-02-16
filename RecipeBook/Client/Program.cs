@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Blazor.Hosting;
+﻿using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Blazor.Hosting;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using RecipeBook.Client.Auth;
@@ -15,8 +16,15 @@ namespace RecipeBook.Client
 
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
-            builder.Services.AddScoped<AuthenticationStateProvider, DummyAuthStateProvider>();
+            //  builder.Services.AddScoped<AuthenticationStateProvider, DummyAuthStateProvider>();
+            builder.Services.AddScoped<JWTAuthenticationProvider>();
+            builder.Services.AddScoped<AuthenticationStateProvider, JWTAuthenticationProvider>(provider => 
+                 provider.GetRequiredService<JWTAuthenticationProvider>());
 
+            builder.Services.AddScoped<ILoginService, JWTAuthenticationProvider>(provider =>
+                 provider.GetRequiredService<JWTAuthenticationProvider>());
+
+            builder.Services.AddBlazoredLocalStorage();
 
             await builder.Build().RunAsync();
         }

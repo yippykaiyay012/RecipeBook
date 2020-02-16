@@ -19,7 +19,7 @@ namespace RecipeBook.Client.Auth
 
             var identity = new ClaimsIdentity();
             await Task.Delay(2000);
-              return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity)));
+            return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity)));
 
 
 
