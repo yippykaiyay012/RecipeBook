@@ -5,40 +5,38 @@
 @using System.Security.Cryptography;
 @using RecipeBook.Shared.Models  
 @inject HttpClient http
-@inject ILocalStorageService localStorage
 @inject NavigationManager nm
 @inject ILoginService loginService
 
 <div class="loginPanel">
     <img class="d-block" src="http://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png" height="50" />
     <p class="sign" align="center">Register New Account</p>
-    <form class="form1 text-center">
-        <input @bind="username" class="un " type="email" align="center" placeholder="Email">
-        <input @bind="password" class="pass" type="password" align="center" placeholder="Password">
-        <a @onclick="RegisterUser" href="#" class="submit register" align="center">Register</a>
-        <p class="forgot" align="center"><a href="/login">Back to Login</a></p>
-    </form>
+    <EditForm Model="UserInfo" OnValidSubmit="RegisterUser">
+        <form class="form1 text-center">
+            <DataAnnotationsValidator />
+            <ValidationMessage For="(() => UserInfo.Email)" />
+            <InputText @bind-Value="UserInfo.Email" class="un " type="email" align="center" placeholder="Email" />
+            <ValidationMessage For="(() => UserInfo.Password)" />
+            <InputText @bind-Value="UserInfo.Password" class="pass" type="password" align="center" placeholder="Password" />
+            <button type="submit" href="#" class="submit register" align="center">Register</button>
+            <p class="forgot" align="center"><a href="/login">Back to Login</a></p>
+        </form>
+    </EditForm>
 </div>
 
 <h3>@resultString</h3>
 
 @code {
 
-    string username;
-    string password;
+    public UserInfo UserInfo { get; set; } = new UserInfo();
 
     string resultString;
 
     async Task RegisterUser()
     {
-        var user = new UserInfo
-        {
-            Email = username,
-            Password = password
-        };
-        var result = await http.PostJsonAsync<UserToken>("/api/Accounts/Create", user);
 
-        await localStorage.SetItemAsync("TOKENKEY", result.Token);
+        var result = await http.PostJsonAsync<UserToken>("/api/Accounts/Create", UserInfo);
+
         await loginService.SignIn(result.Token);
 
 

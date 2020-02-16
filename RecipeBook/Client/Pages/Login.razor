@@ -6,43 +6,40 @@
 @using System.Security.Cryptography;
 @inject HttpClient http
 @using RecipeBook.Shared.Models
-@inject ILocalStorageService localStorage
 @inject NavigationManager nm
 @inject ILoginService loginService 
 
 
-<div class="loginPanel">
-    <img class="d-block" src="http://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png" height="50" />
-    <p class="sign" align="center">Sign in</p>
-    <form class="form1 text-center">
-        <input @bind="username" class="un " type="email" align="center" placeholder="Email">
-        <input @bind="password" class="pass" type="password" align="center" placeholder="Password">
-        <div class="btn-group text-center">
-            <a @onclick="SignIn" href="#" class="submit register" align="center">Sign in</a>
-            <a href="/register" class="submit register" align="center">Register</a>
-        </div>
-        <p class="forgot" align="center"><a href="#">Forgot Password?</a></p>
-    </form>
-</div>
+    <div class="loginPanel">
+        <img class="d-block" src="http://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png" height="50" />
+        <p class="sign" align="center">Sign in</p>
+        <EditForm Model="UserInfo" OnValidSubmit="SignIn">
+            <form class="form1 text-center">
+                <DataAnnotationsValidator />
+                <ValidationMessage For="(() => UserInfo.Email)" />
+                <InputText @bind-Value="UserInfo.Email" class="un " type="email" align="center" placeholder="Email" />
+                <ValidationMessage For="(() => UserInfo.Password)" />
+                <InputText @bind-Value="UserInfo.Password" class="pass" type="password" align="center" placeholder="Password" />
+                <div class="btn-group text-center">
+                    <button type="submit" class="submit register" align="center">Sign in</button>
+                    <a href="/register" class="submit register" align="center">Register</a>
+                </div>
+                <p class="forgot" align="center"><a href="#">Forgot Password?</a></p>
+            </form>
+        </EditForm>
+    </div>
+
 @code {
 
-    string username;
-    string password;
+    public UserInfo UserInfo { get; set; } = new UserInfo();
 
     async Task SignIn()
     {
-        var user = new UserInfo
-        {
-            Email = username,
-            Password = password
-        };
 
-        var result = await http.PostJsonAsync<UserToken>("api/accounts/login", user);
+        var result = await http.PostJsonAsync<UserToken>("api/accounts/login", UserInfo);
         await loginService.SignIn(result.Token);
         nm.NavigateTo("/search");
     }
-
-
 
 
 }
