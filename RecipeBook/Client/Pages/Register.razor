@@ -11,16 +11,16 @@
 <div class="loginPanel">
     <img class="d-block" src="http://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png" height="50" />
     <p class="sign" align="center">Register New Account</p>
-    <EditForm Model="UserInfo" OnValidSubmit="RegisterUser">
-        <form class="form1 text-center">
+    <EditForm Model="UserInfo" OnValidSubmit="RegisterUser" class="form1 text-center">
+
             <DataAnnotationsValidator />
             <ValidationMessage For="(() => UserInfo.Email)" />
             <InputText @bind-Value="UserInfo.Email" class="un " type="email" align="center" placeholder="Email" />
             <ValidationMessage For="(() => UserInfo.Password)" />
             <InputText @bind-Value="UserInfo.Password" class="pass" type="password" align="center" placeholder="Password" />
-            <button type="submit" href="#" class="submit register" align="center">Register</button>
+            <button type="submit" class="submit register" align="center">Register</button>
             <p class="forgot" align="center"><a href="/login">Back to Login</a></p>
-        </form>
+
     </EditForm>
 </div>
 

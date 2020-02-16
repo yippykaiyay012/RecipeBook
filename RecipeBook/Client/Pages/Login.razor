@@ -13,8 +13,7 @@
     <div class="loginPanel">
         <img class="d-block" src="http://icons.iconarchive.com/icons/webalys/kameleon.pics/256/Food-Dome-icon.png" height="50" />
         <p class="sign" align="center">Sign in</p>
-        <EditForm Model="UserInfo" OnValidSubmit="SignIn">
-            <form class="form1 text-center">
+        <EditForm Model="UserInfo" OnValidSubmit="SignIn" class="form1 text-center">
                 <DataAnnotationsValidator />
                 <ValidationMessage For="(() => UserInfo.Email)" />
                 <InputText @bind-Value="UserInfo.Email" class="un " type="email" align="center" placeholder="Email" />
@@ -25,7 +24,6 @@
                     <a href="/register" class="submit register" align="center">Register</a>
                 </div>
                 <p class="forgot" align="center"><a href="#">Forgot Password?</a></p>
-            </form>
         </EditForm>
     </div>
 
