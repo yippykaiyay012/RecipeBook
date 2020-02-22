@@ -10,6 +10,6 @@ namespace RecipeBook.Shared.Models
         public Recipe Recipe { get; set; }
         public int RecipeId { get; set; }
 
-       // public ApplicationUser MyProperty { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

@@ -5,6 +5,7 @@
 @inject NavigationManager nav
 @attribute [Authorize]
 
+
 <div class="container">
 
     <h1 class="text-center pb-5">@recipe.Title</h1>
@@ -105,6 +106,9 @@
 
 @code {
 
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
 
     [Parameter]
     public int Id { get; set; }
@@ -121,12 +125,25 @@
     {
         recipe = await http.GetJsonAsync<Recipe>($"/api/recipes/{Id}");
 
+        var authState = await authenticationStateTask;
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            //need userId to search userFavourites...
+            await http.GetJsonAsync<bool>("$/api/userfavourites?userId={}&recipeId={}");
+            
+            
+        }
 
     }
 
     async Task ToggleFavourite()
-    {           
+    {
         isFavourite = !isFavourite;
+
+
+
 
         isFavouriteImage = isFavourite ? "/img/Heart-True.png" : "/img/Heart-False.png";
     }

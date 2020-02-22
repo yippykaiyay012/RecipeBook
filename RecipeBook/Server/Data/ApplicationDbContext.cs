@@ -18,5 +18,9 @@ namespace RecipeBook.Server.Data
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Step> Steps { get; set; }
 
+        public DbSet<ApplicationUser> Users { get; set; }
+
+        public DbSet<UserFavourite> UserFavourites { get; set; }
+
     }
 }
